@@ -28,5 +28,7 @@ fi
 sed -i 's/USE_DIST_PS.*/USE_DIST_PS = 1/' config.mk
 sed -i 's/PS_PATH.*/PS_PATH = .\/ps-lite/' config.mk
 
-make -j4
-# make $1
+# Use as many CPUs as the host has to build, or default to
+# 4 if we're not on a unix-y system.
+num_cpus=$(grep -sc ^processor /proc/cpuinfo || echo 4)
+make -j$num_cpus

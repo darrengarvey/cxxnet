@@ -18,5 +18,8 @@ if [ ! -f config.mk ]; then
     cp make/config.mk config.mk
 fi
 
-make -j4
+# Use as many CPUs as the host has to build, or default to
+# 4 if we're not on a unix-y system.
+num_cpus=$(grep -sc ^processor /proc/cpuinfo || echo 4)
+make -j$num_cpus
 
